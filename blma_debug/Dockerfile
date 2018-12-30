@@ -1,5 +1,6 @@
-FROM ubuntu:latest
+FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND noninteractive
+RUN sed -i 's|http://archive.ubuntu.com|http://au.archive.ubuntu.com|g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y \
     gdb \
     git \
