@@ -26,4 +26,4 @@ RUN mkdir -p ~/.R && echo 'CPPFLAGS= -Wno-ignored-attributes' > ~/.R/Makevars
 RUN R -e 'devtools::install()'
 #CMD ["/bin/bash"]
 CMD echo 'directory /blma/src' > ~/.gdbinit
-CMD ["R", "-d", "gdb", "-e", "library(blma); example(blma)"]
+CMD ["R", "-d", "gdb"]
