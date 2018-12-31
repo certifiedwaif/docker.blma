@@ -15,7 +15,7 @@ RUN apt-get update \
 ## Add in opts
 # Global site-wide config for clang
 RUN mkdir -p $HOME/.R/ \
-    && echo "MAKEFLAGS = -j 8"	>> $HOME/.R/Makevars \
+#    && echo "MAKEFLAGS = -j 8"	>> $HOME/.R/Makevars \
 	&& echo "CPPFLAGS= -Wno-ignored-attributes" >> $HOME/.R/Makevars
 
 ## Add in required R packages
