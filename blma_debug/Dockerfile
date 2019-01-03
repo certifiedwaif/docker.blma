@@ -17,12 +17,12 @@ RUN echo 'local({r <- getOption("repos") \n\
 })'\
 > ~/.Rprofile
 RUN Rscript -e "install.packages(c('devtools', 'roxygen2'))"
+RUN mkdir -p ~/.R && echo 'CPPFLAGS= -Wno-ignored-attributes' > ~/.R/Makevars
 RUN Rscript -e "install.packages(c('BH', 'Rcpp', 'RcppEigen', 'RcppGSL'))"
 WORKDIR /blma/
 RUN git clone https://github.com/certifiedwaif/blma.git /blma/
 RUN R -e 'Rcpp::compileAttributes()'
 RUN R -e 'devtools::document()'
-RUN mkdir -p ~/.R && echo 'CPPFLAGS= -Wno-ignored-attributes' > ~/.R/Makevars
 RUN R -e 'devtools::install()'
 #CMD ["/bin/bash"]
 CMD echo 'directory /blma/src' > ~/.gdbinit
