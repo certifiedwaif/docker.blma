@@ -3,10 +3,6 @@ FROM certifiedwaif/blma-base:latest
 LABEL maintainer="Mark Greenaway"
 LABEL email="certifiedwaif@gmail.com"
 
-RUN apt-get update && apt-get install -y \
-    gdb \
-    valgrind
-
 WORKDIR /blma/
 
 RUN git clone https://github.com/certifiedwaif/blma.git /blma/
