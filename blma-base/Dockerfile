@@ -16,7 +16,11 @@ RUN echo 'local({r <- getOption("repos") \n\
        options(repos=r) \n\
 })'\
 > ~/.Rprofile
-RUN mkdir -p ~/.R && echo 'CPPFLAGS= -Wno-ignored-attributes' > ~/.R/Makevars
+RUN mkdir -p ~/.R && \
+	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
+	echo 'CFLAGS=-mcpu=power9 -mfloat128-hardware -mvsx' >> ~/.R/Makevars && \
+	echo 'PKG_LIBS+=-pthread' >> ~/.R/Makevars && \
+	echo 'MAKEFLAGS= -j 144' >> ~/.R/Makevars
 
 # Install dependencies for building, documenting and testing
 RUN Rscript -e "install.packages('devtools')"
