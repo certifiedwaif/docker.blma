@@ -12,4 +12,5 @@ RUN R -e 'Rcpp::compileAttributes()'
 RUN R -e 'devtools::document()'
 RUN R -e 'devtools::install(quick=T)'
 
-CMD ["R", "-d", "gdb"]
+#CMD ["R", "-d", "gdb"]
+CMD ["R"]
