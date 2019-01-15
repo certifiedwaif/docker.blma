@@ -17,11 +17,15 @@ RUN echo 'local({r <- getOption("repos") \n\
 })'\
 > ~/.Rprofile
 RUN mkdir -p ~/.R && echo 'CPPFLAGS= -Wno-ignored-attributes' > ~/.R/Makevars
+RUN mkdir -p ~/.R && echo 'MAKEFLAGS= -j 4' >> ~/.R/Makevars
 
 # Install dependencies for building, documenting and testing
 RUN Rscript -e "install.packages('devtools')"
 RUN Rscript -e "install.packages('roxygen2')"
 RUN Rscript -e "install.packages('testthat')"
+
+# Install the development version of devtools
+RUN Rscript -e "devtools::install_github('r-lib/devtools')"
 
 # Install dependencies for blma
 RUN Rscript -e "install.packages('BH')"
