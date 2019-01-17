@@ -3,19 +3,22 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN sed -i 's|http://archive.ubuntu.com|http://au.archive.ubuntu.com|g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y \
 	gdb \
-	libgsl-dev \
     git \
     libcurl4-gnutls-dev \
     libgit2-dev \
+	libgsl-dev \
+	libopenblas-dev \
     libssl-dev \
     libxml2-dev \
     r-base \
     valgrind
+ENV GSL_CBLAS_LIB=-lopenblas
 RUN echo 'local({r <- getOption("repos") \n\
        r["CRAN"] <- "https://cran.csiro.au"  \n\
        options(repos=r) \n\
 })'\
 > ~/.Rprofile
+
 
 RUN mkdir -p ~/.R && \
 	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
