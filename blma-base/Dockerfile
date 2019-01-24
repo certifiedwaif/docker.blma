@@ -39,3 +39,7 @@ RUN Rscript -e "install.packages('BH')"
 RUN Rscript -e "install.packages('Rcpp')"
 RUN Rscript -e "install.packages('RcppEigen')"
 RUN Rscript -e "install.packages('RcppGSL')"
+
+# Install test dependencies for blma
+RUN Rscript -e "install.packages('parallel')"
+RUN Rscript -e "install.packages('tictoc')"
