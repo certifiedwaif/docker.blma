@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libxml2-dev \
     r-base \
-    valgrind
+    valgrind \
+    vim
 ENV GSL_CBLAS_LIB=-lopenblas
 RUN echo 'local({r <- getOption("repos") \n\
        r["CRAN"] <- "https://cran.csiro.au"  \n\
@@ -22,7 +23,6 @@ RUN echo 'local({r <- getOption("repos") \n\
 
 RUN mkdir -p ~/.R && \
 	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
-	echo 'CFLAGS=-mcpu=power9 -mfloat128-hardware -mvsx' >> ~/.R/Makevars && \
 	echo 'PKG_LIBS+=-pthread' >> ~/.R/Makevars && \
 	echo 'MAKEFLAGS= -j 144' >> ~/.R/Makevars
 
@@ -41,4 +41,5 @@ RUN Rscript -e "install.packages('RcppEigen')"
 RUN Rscript -e "install.packages('RcppGSL')"
 
 # Install test dependencies for blma
+RUN Rscript -e "install.packages('glue')"
 RUN Rscript -e "install.packages('tictoc')"
