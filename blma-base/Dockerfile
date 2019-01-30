@@ -43,3 +43,4 @@ RUN Rscript -e "install.packages('RcppGSL')"
 # Install test dependencies for blma
 RUN Rscript -e "install.packages('glue')"
 RUN Rscript -e "install.packages('tictoc')"
+RUN Rscript -e "install.packages('tidyverse')"
