@@ -1,6 +1,5 @@
-FROM ubuntu:18.04
+FROM rocker/tidyverse
 ENV DEBIAN_FRONTEND noninteractive
-RUN sed -i 's|http://archive.ubuntu.com|http://au.archive.ubuntu.com|g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y \
 	gdb \
     git \
@@ -23,24 +22,15 @@ RUN echo 'local({r <- getOption("repos") \n\
 
 RUN mkdir -p ~/.R && \
 	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
-	echo 'PKG_LIBS+=-pthread' >> ~/.R/Makevars && \
-	echo 'MAKEFLAGS= -j 144' >> ~/.R/Makevars
-
-# Install dependencies for building, documenting and testing
-RUN Rscript -e "install.packages('devtools')"
-RUN Rscript -e "install.packages('roxygen2')"
-RUN Rscript -e "install.packages('testthat')"
+	echo 'PKG_LIBS+=-pthread' >> ~/.R/Makevars
 
 # Install the development version of devtools
 RUN Rscript -e "devtools::install_github('r-lib/devtools')"
 
 # Install dependencies for blma
-RUN Rscript -e "install.packages('BH')"
-RUN Rscript -e "install.packages('Rcpp')"
 RUN Rscript -e "install.packages('RcppEigen')"
 RUN Rscript -e "install.packages('RcppGSL')"
 
 # Install test dependencies for blma
 RUN Rscript -e "install.packages('glue')"
 RUN Rscript -e "install.packages('tictoc')"
-RUN Rscript -e "install.packages('tidyverse')"
