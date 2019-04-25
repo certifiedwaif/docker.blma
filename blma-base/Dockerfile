@@ -13,19 +13,11 @@ RUN apt-get update && apt-get install -y \
     valgrind \
     vim
 ENV GSL_CBLAS_LIB=-lopenblas
-RUN echo 'local({r <- getOption("repos") \n\
-       r["CRAN"] <- "https://cran.csiro.au"  \n\
-       options(repos=r) \n\
-})'\
-> ~/.Rprofile
 
 
 RUN mkdir -p ~/.R && \
 	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
 	echo 'PKG_LIBS+=-pthread' >> ~/.R/Makevars
-
-# Install the development version of devtools
-RUN Rscript -e "devtools::install_github('r-lib/devtools')"
 
 # Install dependencies for blma
 RUN Rscript -e "install.packages('RcppEigen')"
