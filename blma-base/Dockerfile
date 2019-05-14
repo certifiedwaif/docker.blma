@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y \
 	libopenblas-dev \
     libssl-dev \
     libxml2-dev \
-    r-base \
     valgrind \
     vim
 ENV GSL_CBLAS_LIB=-lopenblas

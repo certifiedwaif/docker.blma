@@ -1,4 +1,4 @@
-FROM certifiedwaif/blma-base:latest
+FROM gcr.io/pure-coda-133823/blma-base:latest
 
 LABEL maintainer="Mark Greenaway"
 LABEL email="certifiedwaif@gmail.com"

@@ -8,6 +8,7 @@ WORKDIR /blma/
 
 # Install blma itself
 RUN git clone https://github.com/certifiedwaif/blma.git /blma/
+RUN cd /blma
 RUN R -e 'Rcpp::compileAttributes()'
 RUN R -e 'devtools::document()'
 RUN R -e 'devtools::install(quick=T)'
