@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: blma
+spec:
+  template:
+    spec:
+      containers:
+      - name: pi
+        image: gcr.io/pure-coda-133823/blma
+        command: ["R", "-e", "testthat::test_file('tests/testthat/test-Kakadu_produces_correct_results_BIC.R')"]
+      restartPolicy: Never
+  backoffLimit: 4
