@@ -25,8 +25,8 @@ RUN apt-get update && apt-get install -y \
     vim
 ENV GSL_CBLAS_LIB=-lopenblas
 
-
 RUN mkdir -p ~/.R && \
+    # echo 'MAKEFLAGS=-j 12' >> ~/.R/Makevars && \
 	echo 'VER=-9' >> ~/.R/Makevars && \
 	echo 'CC=gcc$(VER)' >> ~/.R/Makevars && \
 	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
@@ -73,4 +73,12 @@ RUN git clone https://github.com/certifiedwaif/blmatest.git /blmatest/
 RUN R -e 'Rcpp::compileAttributes()'
 RUN R -e 'devtools::install(quick=T)'
 
+# Build shared libraries, and put them in the proper dir
+WORKDIR /blmatest/src
+RUN R CMD SHLIB hyperGonN.c posroot.c
+RUN R CMD SHLIB ZS.c posroot.c
+RUN cp /blmatest/src/hyperGonN.so /test.blma/Common/
+RUN cp /blmatest/src/ZS.so /test.blma/Common/
+
+WORKDIR /blma
 CMD ["R"]
