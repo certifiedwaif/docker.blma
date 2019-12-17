@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
 ENV GSL_CBLAS_LIB=-lopenblas
 
 RUN mkdir -p ~/.R && \
-    # echo 'MAKEFLAGS=-j 12' >> ~/.R/Makevars && \
+    echo 'MAKEFLAGS=-j 12' >> ~/.R/Makevars && \
 	echo 'VER=-9' >> ~/.R/Makevars && \
 	echo 'CC=gcc$(VER)' >> ~/.R/Makevars && \
 	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
