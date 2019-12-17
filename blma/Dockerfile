@@ -6,10 +6,10 @@ LABEL email="certifiedwaif@gmail.com"
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 RUN apt-get install -y gnupg software-properties-common
-RUN	echo "deb http://cran.stat.ucla.edu/bin/linux/ubuntu bionic-cran35/" >> /etc/apt/sources.list.d/cran.list
-RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-RUN add-apt-repository ppa:jonathonf/gcc-9.0
-RUN apt-get install -y gcc-9 gfortran-9
+# RUN	echo "deb http://cran.stat.ucla.edu/bin/linux/ubuntu bionic-cran35/" >> /etc/apt/sources.list.d/cran.list
+# RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+# RUN add-apt-repository ppa:jonathonf/gcc-9.0
+# RUN apt-get install -y gcc-9 gfortran-9
 RUN apt-get update && apt-get install -y \
 	gdb \
     git \
@@ -27,11 +27,11 @@ ENV GSL_CBLAS_LIB=-lopenblas
 
 RUN mkdir -p ~/.R && \
     # echo 'MAKEFLAGS=-j 12' >> ~/.R/Makevars && \
-	echo 'VER=-9' >> ~/.R/Makevars && \
-	echo 'CC=gcc$(VER)' >> ~/.R/Makevars && \
-	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
-	echo 'F77=gfortran$(VER)' >> ~/.R/Makevars && \
-	echo 'FC=$(F77)' >> ~/.R/Makevars && \
+	# echo 'VER=-9' >> ~/.R/Makevars && \
+	# echo 'CC=gcc$(VER)' >> ~/.R/Makevars && \
+	# echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
+	# echo 'F77=gfortran$(VER)' >> ~/.R/Makevars && \
+	# echo 'FC=$(F77)' >> ~/.R/Makevars && \
 	echo 'PKG_LIBS+=-pthread' >> ~/.R/Makevars
 
 # Install dependencies for blma
@@ -50,6 +50,7 @@ RUN Rscript -e "install.packages('testthat')"
 WORKDIR /blma
 
 # Install blma itself
+RUN echo hello
 RUN git clone https://github.com/certifiedwaif/blma.git /blma/
 RUN R -e 'Rcpp::compileAttributes()'
 RUN R -e 'devtools::document()'
