@@ -6,8 +6,11 @@ LABEL email="certifiedwaif@gmail.com"
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 RUN apt-get install -y gnupg software-properties-common
-RUN	echo "deb http://cran.stat.ucla.edu/bin/linux/ubuntu bionic-cran35/" >> /etc/apt/sources.list.d/cran.list
-RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 51716619E084DAB9
+RUN	echo "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/" >> /etc/apt/sources.list.d/cran.list
+RUN apt-get update && apt-get install -y \
+	r-base \
+	r-base-dev
 RUN add-apt-repository ppa:jonathonf/gcc-9.0
 RUN apt-get install -y gcc-9 gfortran-9
 RUN apt-get update && apt-get install -y \
@@ -19,8 +22,6 @@ RUN apt-get update && apt-get install -y \
 	libopenblas-dev \
     libssl-dev \
     libxml2-dev \
-	r-base \
-	r-base-dev \
     valgrind \
     vim
 ENV GSL_CBLAS_LIB=-lopenblas
