@@ -11,8 +11,8 @@ RUN	echo "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/" >> /e
 RUN apt-get update && apt-get install -y \
 	r-base \
 	r-base-dev
-RUN add-apt-repository ppa:jonathonf/gcc-9.0
-RUN apt-get install -y gcc-9 gfortran-9
+# RUN add-apt-repository ppa:jonathonf/gcc-9.0
+# RUN apt-get install -y gcc-9 gfortran-9
 RUN apt-get update && apt-get install -y \
 	gdb \
     git \
@@ -26,17 +26,18 @@ RUN apt-get update && apt-get install -y \
     vim
 ENV GSL_CBLAS_LIB=-lopenblas
 
-RUN mkdir -p ~/.R && \
-    echo 'MAKEFLAGS=-j 12' >> ~/.R/Makevars && \
-	echo 'VER=-9' >> ~/.R/Makevars && \
-	echo 'CC=gcc$(VER)' >> ~/.R/Makevars && \
-	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
-	echo 'F77=gfortran$(VER)' >> ~/.R/Makevars && \
-	echo 'FC=$(F77)' >> ~/.R/Makevars && \
-	echo 'PKG_LIBS+=-pthread' >> ~/.R/Makevars
+# RUN mkdir -p ~/.R && \
+#     echo 'MAKEFLAGS=-j 12' >> ~/.R/Makevars && \
+# 	echo 'VER=-9' >> ~/.R/Makevars && \
+# 	echo 'CC=gcc$(VER)' >> ~/.R/Makevars && \
+# 	echo 'CPPFLAGS= -Wno-ignored-attributes' >> ~/.R/Makevars && \
+# 	echo 'F77=gfortran$(VER)' >> ~/.R/Makevars && \
+# 	echo 'FC=$(F77)' >> ~/.R/Makevars && \
+# 	echo 'PKG_LIBS+=-pthread' >> ~/.R/Makevars
 
 # Install dependencies for blma
 RUN Rscript -e "install.packages('devtools')"
+RUN Rscript -e "install.packages('tidyverse')"
 RUN Rscript -e "install.packages('roxygen2')"
 
 RUN Rscript -e "install.packages('BH')"
@@ -46,6 +47,8 @@ RUN Rscript -e "install.packages('RcppGSL')"
 RUN Rscript -e "install.packages('glue')"
 RUN Rscript -e "install.packages('tictoc')"
 RUN Rscript -e "install.packages('testthat')"
+RUN apt-get install -y libfontconfig1-dev pandoc libcairo2-dev
+RUN Rscript -e "install.packages('flextable')"
 
 # Set working directory
 WORKDIR /blma
@@ -56,30 +59,30 @@ RUN R -e 'Rcpp::compileAttributes()'
 RUN R -e 'devtools::document()'
 RUN R -e 'devtools::install(quick=T)'
 
-# Install dependencies for John's test scripts
+# # Install dependencies for John's test scripts
 RUN R -e "install.packages('BAS')"
 RUN R -e "install.packages('BayesVarSel')"
 RUN R -e "install.packages('BMS')"
 RUN R -e "install.packages('gsl')"
 RUN R -e "devtools::install_github('cran/appell')"
 RUN R -e "install.packages('pracma')"
-WORKDIR /test.blma
-RUN git clone https://github.com/certifiedwaif/test.blma.git /test.blma/
+# WORKDIR /test.blma
+# RUN git clone https://github.com/certifiedwaif/test.blma.git /test.blma/
 
-# Install dependencies for blmatest, and blmatest
-RUN R -e "install.packages('data.table')"
-RUN R -e "install.packages('ncvreg')"
-WORKDIR /blmatest
-RUN git clone https://github.com/certifiedwaif/blmatest.git /blmatest/
-RUN R -e 'Rcpp::compileAttributes()'
-RUN R -e 'devtools::install(quick=T)'
+# # Install dependencies for blmatest, and blmatest
+# RUN R -e "install.packages('data.table')"
+# RUN R -e "install.packages('ncvreg')"
+# WORKDIR /blmatest
+# RUN git clone https://github.com/certifiedwaif/blmatest.git /blmatest/
+# RUN R -e 'Rcpp::compileAttributes()'
+# RUN R -e 'devtools::install(quick=T)'
 
-# Build shared libraries, and put them in the proper dir
-WORKDIR /blmatest/src
-RUN R CMD SHLIB hyperGonN.c posroot.c
-RUN R CMD SHLIB ZS.c posroot.c
-RUN cp /blmatest/src/hyperGonN.so /test.blma/Common/
-RUN cp /blmatest/src/ZS.so /test.blma/Common/
+# # Build shared libraries, and put them in the proper dir
+# WORKDIR /blmatest/src
+# RUN R CMD SHLIB hyperGonN.c posroot.c
+# RUN R CMD SHLIB ZS.c posroot.c
+# RUN cp /blmatest/src/hyperGonN.so /test.blma/Common/
+# RUN cp /blmatest/src/ZS.so /test.blma/Common/
 
 WORKDIR /blma
 CMD ["R"]
