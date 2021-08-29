@@ -1,5 +1,5 @@
-FROM ubuntu:18.04
-# FROM ubuntu:21.10
+# FROM ubuntu:18.04
+FROM ubuntu:21.10
 
 LABEL maintainer="Mark Greenaway"
 LABEL email="certifiedwaif@gmail.com"
@@ -28,6 +28,7 @@ RUN mkdir -p ~/.R && \
 
 # Install dependencies for blma
 RUN Rscript -e "install.packages('devtools')"
+RUN Rscript -e "install.packages('tidyverse')"
 RUN Rscript -e "install.packages('roxygen2')"
 
 RUN Rscript -e "install.packages('BH')"
@@ -37,6 +38,8 @@ RUN Rscript -e "install.packages('RcppGSL')"
 RUN Rscript -e "install.packages('glue')"
 RUN Rscript -e "install.packages('tictoc')"
 RUN Rscript -e "install.packages('testthat')"
+RUN apt-get install -y libfontconfig1-dev pandoc libcairo2-dev
+RUN Rscript -e "install.packages('flextable')"
 
 # Set working directory
 WORKDIR /blma
@@ -47,30 +50,30 @@ RUN R -e 'Rcpp::compileAttributes()'
 RUN R -e 'devtools::document()'
 RUN R -e 'devtools::install(quick=T)'
 
-# Install dependencies for John's test scripts
+# # Install dependencies for John's test scripts
 RUN R -e "install.packages('BAS')"
 RUN R -e "install.packages('BayesVarSel')"
 RUN R -e "install.packages('BMS')"
 RUN R -e "install.packages('gsl')"
 RUN R -e "devtools::install_github('cran/appell')"
 RUN R -e "install.packages('pracma')"
-WORKDIR /test.blma
-RUN git clone https://github.com/certifiedwaif/test.blma.git /test.blma/
+# WORKDIR /test.blma
+# RUN git clone https://github.com/certifiedwaif/test.blma.git /test.blma/
 
-# Install dependencies for blmatest, and blmatest
-RUN R -e "install.packages('data.table')"
-RUN R -e "install.packages('ncvreg')"
-WORKDIR /blmatest
-RUN git clone https://github.com/certifiedwaif/blmatest.git /blmatest/
-RUN R -e 'Rcpp::compileAttributes()'
-RUN R -e 'devtools::install(quick=T)'
+# # Install dependencies for blmatest, and blmatest
+# RUN R -e "install.packages('data.table')"
+# RUN R -e "install.packages('ncvreg')"
+# WORKDIR /blmatest
+# RUN git clone https://github.com/certifiedwaif/blmatest.git /blmatest/
+# RUN R -e 'Rcpp::compileAttributes()'
+# RUN R -e 'devtools::install(quick=T)'
 
-# Build shared libraries, and put them in the proper dir
-WORKDIR /blmatest/src
-RUN R CMD SHLIB hyperGonN.c posroot.c
-RUN R CMD SHLIB ZS.c posroot.c
-RUN cp /blmatest/src/hyperGonN.so /test.blma/Common/
-RUN cp /blmatest/src/ZS.so /test.blma/Common/
+# # Build shared libraries, and put them in the proper dir
+# WORKDIR /blmatest/src
+# RUN R CMD SHLIB hyperGonN.c posroot.c
+# RUN R CMD SHLIB ZS.c posroot.c
+# RUN cp /blmatest/src/hyperGonN.so /test.blma/Common/
+# RUN cp /blmatest/src/ZS.so /test.blma/Common/
 
 WORKDIR /blma
 CMD ["R"]
