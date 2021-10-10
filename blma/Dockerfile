@@ -46,7 +46,7 @@ RUN Rscript -e "install.packages('flextable')"
 WORKDIR /blma
 
 # Install blma itself
-RUN git clone https://github.com/certifiedwaif/blma.git /blma/
+RUN git clone -b fix-data-sharing https://github.com/certifiedwaif/blma.git /blma/
 RUN R -e 'Rcpp::compileAttributes()'
 RUN R -e 'devtools::document()'
 RUN R -e 'devtools::install(quick=T)'

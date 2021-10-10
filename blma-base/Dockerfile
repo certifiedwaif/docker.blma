@@ -21,6 +21,7 @@ RUN mkdir -p ~/.R && \
 # Install dependencies for blma
 RUN Rscript -e "install.packages('RcppEigen')"
 RUN Rscript -e "install.packages('RcppGSL')"
+RUN Rscript -e "install.packages('BH')"
 
 # Install test dependencies for blma
 RUN Rscript -e "install.packages('glue')"
