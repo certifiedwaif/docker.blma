@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
 ENV GSL_CBLAS_LIB=-lopenblas
 
 RUN mkdir -p ~/.R && \
+    echo 'MAKEFLAGS=-j 4"' && \
  	echo 'PKG_LIBS+=-pthread' >> ~/.R/Makevars
 
 # Install dependencies for blma

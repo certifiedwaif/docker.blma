@@ -5,12 +5,10 @@ LABEL email="certifiedwaif@gmail.com"
 
 # Set working directory
 WORKDIR /blma/
+COPY ./blma/ /blma/
+RUN ./build.sh
 
-# Install blma itself
-RUN git clone https://github.com/certifiedwaif/blma.git /blma/
-RUN cd /blma
-RUN R -e 'Rcpp::compileAttributes()'
-RUN R -e 'devtools::document()'
-RUN R -e 'devtools::install(quick=T)'
+COPY .gdbinit /blma/
+COPY eigen/ /blma/eigen/
 
 CMD ["R", "-d", "gdb"]
