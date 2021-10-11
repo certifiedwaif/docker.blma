@@ -10,5 +10,6 @@ RUN ./build.sh
 
 COPY .gdbinit /blma/
 COPY eigen/ /blma/eigen/
+RUN echo '        add-auto-load-safe-path /blma/.gdbinit' > /root/.gdbinit
 
 CMD ["R", "-d", "gdb"]
